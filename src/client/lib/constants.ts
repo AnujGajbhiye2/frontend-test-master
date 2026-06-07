@@ -28,6 +28,15 @@ export const OPERATION_LABELS: Record<string, string> = {
   'GREATER_THAN': 'is greater than'
 }
 
+export const FIELDNAME_LABELS: Record<string, string> = {
+  "amount": 'Amount',
+  "name": 'Name',
+  "id": 'ID',
+  "transaction_state": 'Transaction State',
+  "device_ip": 'Device IP',
+  "installments": 'Installments',
+}
+
 export const DEFAULT_FIELD_VALUES = {
   name: "",
   id: "",

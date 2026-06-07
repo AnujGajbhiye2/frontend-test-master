@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 import "vitest/config";
 import tailwindcss from '@tailwindcss/vite'
 import react from "@vitejs/plugin-react-swc";
@@ -23,5 +23,11 @@ export default defineConfig({
     environment: "jsdom",
     globals: true,
     setupFiles: "./vite.setup.ts",
+    coverage: {
+      provider: 'istanbul',
+      reporter: ['text', 'html'],
+      include: ['src/client/**/*.{ts,tsx}'],
+      exclude: ['src/client/components/ui/**'] // shadcn generated files, can skip
+    }
   },
 });

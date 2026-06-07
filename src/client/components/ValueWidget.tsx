@@ -16,15 +16,12 @@ const ValueWidget = ({
   setError: React.Dispatch<React.SetStateAction<string | null>>;
   onChange: (updated: RuleType) => void;
 }) => {
-
   const handleValueChange = (value: RuleType["value"]): void => {
     onChange({
       ...rule,
       value,
     } as RuleType);
   };
-
-
 
   if (rule.fieldName === "transaction_state") {
     return (
@@ -77,6 +74,7 @@ const ValueWidget = ({
       </div>
     );
   }
+
   return (
     <Input
       className={"w-40" + (error ? " border-destructive" : "")}
@@ -90,7 +88,6 @@ const ValueWidget = ({
         )
       }
     />
-    
   );
 };
 

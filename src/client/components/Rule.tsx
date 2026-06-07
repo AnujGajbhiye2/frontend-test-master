@@ -7,7 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "./ui/button";
-import { DEFAULT_FIELD_VALUES, FIELD_NAMES, OPERATION_LABELS, OPERATION_MAP } from "@/lib/constants";
+import { DEFAULT_FIELD_VALUES, FIELD_NAMES, FIELDNAME_LABELS, OPERATION_LABELS, OPERATION_MAP } from "@/lib/constants";
 import ValueWidget from "./ValueWidget";
 import { useEffect, useState } from "react";
 import { validate } from "@/lib/utils";
@@ -54,7 +54,7 @@ const Rule = ({ rule, onChange, onDelete, submitted }: RulePropsType) => {
           <SelectContent>
             {FIELD_NAMES.map((f) => (
               <SelectItem key={f} value={f}>
-                {f}
+                {FIELDNAME_LABELS[f]}
               </SelectItem>
             ))}
           </SelectContent>

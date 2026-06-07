@@ -20,8 +20,7 @@ function serialize(group: RuleGroupType, isRoot: boolean): object {
 }
 
 function App() {
-
-  const [submitted, setSubmitted] = useState<boolean>(false)
+  const [submitted, setSubmitted] = useState<boolean>(false);
   const [group, setGroup] = useState<RuleGroupType>({
     id: crypto.randomUUID(),
     combinator: "AND",
@@ -31,12 +30,12 @@ function App() {
 
   useEffect(() => {
     setSubmitted(false);
-  }, [group])
+  }, [group]);
 
   const handleSubmit = () => {
-    setSubmitted(true)
-    if(hasError(group)) return alert("Please fix validation errors before submitting.");
-    setSubmitted(false)
+    setSubmitted(true);
+    if (hasError(group)) return alert("Please fix validation errors before submitting.");
+    setSubmitted(false);
     setResult(serialize(group, true));
   };
 
@@ -46,8 +45,8 @@ function App() {
         return hasError(condition as RuleGroupType);
       }
       return validate(condition) !== null;
-    })
-  }
+    });
+  };
 
   return (
     <AppShell>
