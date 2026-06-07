@@ -8,6 +8,7 @@ import {
 } from "../types/RuleTypes";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "./ui/button";
 
 const FIELD_NAMES = [
   "amount",
@@ -45,9 +46,11 @@ const CURRENCIES = ["USD", "EUR", "GBP"] as const;
 const Rule = ({
   rule,
   onChange,
+  onDelete,
 }: {
   rule: RuleType;
   onChange: (updated: RuleType) => void;
+  onDelete: () => void;
 }) => {
   const handleSelectChange = (value: string, fieldType: string): void => {
     let newFieldName, newOP, newValue;
@@ -98,6 +101,7 @@ const Rule = ({
 
     onChange({ ...rule, value: newValue } as RuleType);
   };
+
 
   const { fieldName, operation } = rule;
 
@@ -171,6 +175,9 @@ const Rule = ({
           onChange={(e) => handleInputChange(e, rule.fieldName === "installments" ? "installments" : "value")}
         />
       )}
+      <Button type="button"  variant="destructive" className='cursor-pointer' onClick={() => onDelete()}>
+        -
+      </Button>
     </div>
   );
 };

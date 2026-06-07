@@ -2,7 +2,13 @@ import React from "react";
 import { CombinatorType, RuleGroupType, RuleType } from "../types/RuleTypes";
 import Rule from "./Rule";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
 
 const initialRule = {
@@ -16,9 +22,10 @@ type GroupProps = {
   group: RuleGroupType;
   onChange: React.Dispatch<React.SetStateAction<RuleGroupType>>;
   depth?: number;
+  onDelete?: () => void;
 };
 
-const Group = ({ group, onChange, depth = 0 }: GroupProps) => {
+const Group = ({ group, onChange, depth = 0, onDelete }: GroupProps) => {
   const childSetter = (childId: string, action: React.SetStateAction<RuleGroupType>): void =>
     onChange((prev) => ({
       ...prev,
@@ -75,6 +82,11 @@ const Group = ({ group, onChange, depth = 0 }: GroupProps) => {
           <Button size="sm" variant="default" onClick={handleAddGroup}>
             + Group
           </Button>
+          {onDelete && (
+            <Button className="cursor-pointer" type="button" size="sm" variant="destructive" onClick={onDelete}>
+              -
+            </Button>
+          )}
         </div>
 
         <div className="space-y-2">
@@ -86,6 +98,12 @@ const Group = ({ group, onChange, depth = 0 }: GroupProps) => {
                   group={cond}
                   onChange={(action) => childSetter(cond.id, action)}
                   depth={depth + 1}
+                  onDelete={() =>
+                    onChange((prev) => ({
+                      ...prev,
+                      conditions: prev.conditions.filter((c) => c.id !== cond.id),
+                    }))
+                  }
                 />
               );
             } else {
@@ -97,6 +115,12 @@ const Group = ({ group, onChange, depth = 0 }: GroupProps) => {
                     onChange((prev) => ({
                       ...prev,
                       conditions: prev.conditions.map((c) => (c.id === updated.id ? updated : c)),
+                    }))
+                  }
+                  onDelete={() =>
+                    onChange((prev) => ({
+                      ...prev,
+                      conditions: prev.conditions.filter((c) => c.id !== cond.id),
                     }))
                   }
                 />
