@@ -4,20 +4,8 @@ import AppShell from "./layout/AppShell";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RuleGroupType } from "./types/RuleTypes";
-import { validate } from "./lib/utils";
+import { serialize, validate } from "./lib/utils";
 import { initialState } from "./lib/constants";
-
-function serialize(group: RuleGroupType, isRoot: boolean): object {
-  const key = isRoot ? "conditions" : "subConditions";
-  return {
-    combinator: group.combinator,
-    [key]: group.conditions.map((c) =>
-      "combinator" in c
-        ? serialize(c as RuleGroupType, false)
-        : { fieldName: c.fieldName, operation: c.operation, value: c.value },
-    ),
-  };
-}
 
 function App() {
   const [submitted, setSubmitted] = useState<boolean>(false);
