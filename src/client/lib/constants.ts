@@ -21,6 +21,13 @@ export const OPERATION_MAP: Record<FieldNameType, ReadonlyArray<EqualityOp | Num
   transaction_state: EQUALITY_OPS,
 };
 
+export const OPERATION_LABELS: Record<string, string> = {
+  'EQUAL': 'is',
+  'NOT_EQUAL': 'is not',
+  'LESS_THAN': 'is less than',
+  'GREATER_THAN': 'is greater than'
+}
+
 export const DEFAULT_FIELD_VALUES = {
   name: "",
   id: "",

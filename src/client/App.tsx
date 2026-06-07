@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Group from "./components/Group";
 import AppShell from "./layout/AppShell";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RuleGroupType } from "./types/RuleTypes";
 import { initialRule } from "./lib/constants";
+import { validate } from "./lib/utils";
 
 function serialize(group: RuleGroupType, isRoot: boolean): object {
   const key = isRoot ? "conditions" : "subConditions";
@@ -19,6 +20,8 @@ function serialize(group: RuleGroupType, isRoot: boolean): object {
 }
 
 function App() {
+
+  const [submitted, setSubmitted] = useState<boolean>(false)
   const [group, setGroup] = useState<RuleGroupType>({
     id: crypto.randomUUID(),
     combinator: "AND",
@@ -26,15 +29,31 @@ function App() {
   });
   const [result, setResult] = useState<object | null>(null);
 
+  useEffect(() => {
+    setSubmitted(false);
+  }, [group])
+
   const handleSubmit = () => {
+    setSubmitted(true)
+    if(hasError(group)) return alert("Please fix validation errors before submitting.");
+    setSubmitted(false)
     setResult(serialize(group, true));
   };
+
+  const hasError = (group: RuleGroupType): boolean => {
+    return group.conditions.some((condition) => {
+      if ("combinator" in condition) {
+        return hasError(condition as RuleGroupType);
+      }
+      return validate(condition) !== null;
+    })
+  }
 
   return (
     <AppShell>
       <div className="grid grid-cols-12 gap-6 items-start">
         <div className="col-span-6 space-y-4">
-          <Group group={group} onChange={setGroup} />
+          <Group group={group} onChange={setGroup} submitted={submitted} />
           <Button onClick={handleSubmit}>Submit Query</Button>
         </div>
 

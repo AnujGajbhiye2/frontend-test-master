@@ -16,9 +16,10 @@ type GroupProps = {
   group: RuleGroupType;
   onChange: React.Dispatch<React.SetStateAction<RuleGroupType>>;
   onDelete?: () => void;
+  submitted: boolean;
 };
 
-const Group = ({ group, onChange, onDelete }: GroupProps) => {
+const Group = ({ group, onChange, onDelete, submitted}: GroupProps) => {
   const childSetter = (childId: string, action: React.SetStateAction<RuleGroupType>): void =>
     onChange((prev) => ({
       ...prev,
@@ -104,6 +105,7 @@ const Group = ({ group, onChange, onDelete }: GroupProps) => {
                       conditions: prev.conditions.filter((c) => c.id !== cond.id),
                     }))
                   }
+                  submitted={submitted}
                 />
               );
             } else {
@@ -111,6 +113,7 @@ const Group = ({ group, onChange, onDelete }: GroupProps) => {
                 <Rule
                   key={cond.id}
                   rule={cond}
+                  submitted={submitted}
                   onChange={(updated) =>
                     onChange((prev) => ({
                       ...prev,
