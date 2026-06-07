@@ -36,12 +36,14 @@ const Group = ({ group, onChange, depth = 0, onDelete }: GroupProps) => {
     }));
 
   const handleAddRule = (): void => {
-    onChange((prev) => ({
-      ...prev,
-      conditions: [...prev.conditions, { ...initialRule, id: crypto.randomUUID() }].sort((a) =>
-        "combinator" in a ? 1 : -1,
-      ),
-    }));
+    onChange((prev) => {
+      const rules = prev.conditions.filter((c) => !("combinator" in c));
+      const groups = prev.conditions.filter((c) => "combinator" in c);
+      return {
+        ...prev,
+        conditions: [...rules, { ...initialRule, id: crypto.randomUUID() }, ...groups],
+      };
+    });
   };
 
   const handleAddGroup = (): void => {
@@ -83,7 +85,13 @@ const Group = ({ group, onChange, depth = 0, onDelete }: GroupProps) => {
             + Group
           </Button>
           {onDelete && (
-            <Button className="cursor-pointer" type="button" size="sm" variant="destructive" onClick={onDelete}>
+            <Button
+              className="cursor-pointer"
+              type="button"
+              size="sm"
+              variant="destructive"
+              onClick={onDelete}
+            >
               -
             </Button>
           )}

@@ -1,0 +1,34 @@
+import { EqualityOp, NumericOp, FieldNameType } from "@/types/RuleTypes";
+
+export const FIELD_NAMES = [
+  "amount",
+  "name",
+  "id",
+  "transaction_state",
+  "device_ip",
+  "installments",
+] as const;
+
+export const EQUALITY_OPS: EqualityOp[] = ["EQUAL", "NOT_EQUAL"];
+export const NUMERIC_OPS: NumericOp[] = [...EQUALITY_OPS, "LESS_THAN", "GREATER_THAN"];
+
+export const OPERATION_MAP: Record<FieldNameType, string[]> = {
+  name: EQUALITY_OPS,
+  device_ip: EQUALITY_OPS,
+  id: EQUALITY_OPS,
+  installments: NUMERIC_OPS,
+  amount: NUMERIC_OPS,
+  transaction_state: EQUALITY_OPS,
+};
+
+export const DEFAULT_FIELD_VALUES = {
+  name: "",
+  id: "",
+  device_ip: "",
+  installments: 0,
+  amount: { amount: 0, currency: "USD" },
+  transaction_state: "SUCCEEDED",
+};
+
+export const TRANSACTION_STATES = ["SUCCEEDED", "REJECTED", "ERROR", "TIMEOUT", "CANCELLED", "FAILED", "ABORTED"] as const;
+export const CURRENCIES = ["USD", "EUR", "GBP"] as const;
