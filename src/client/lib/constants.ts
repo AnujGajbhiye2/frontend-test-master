@@ -1,4 +1,4 @@
-import { EqualityOp, NumericOp, FieldNameType, RuleType } from "@/types/RuleTypes";
+import { EqualityOp, NumericOp, FieldNameType, RuleType, RuleGroupType } from "@/types/RuleTypes";
 
 export const FIELD_NAMES = [
   "amount",
@@ -22,20 +22,20 @@ export const OPERATION_MAP: Record<FieldNameType, ReadonlyArray<EqualityOp | Num
 };
 
 export const OPERATION_LABELS: Record<string, string> = {
-  'EQUAL': 'is',
-  'NOT_EQUAL': 'is not',
-  'LESS_THAN': 'is less than',
-  'GREATER_THAN': 'is greater than'
-}
+  EQUAL: "is",
+  NOT_EQUAL: "is not",
+  LESS_THAN: "is less than",
+  GREATER_THAN: "is greater than",
+};
 
 export const FIELDNAME_LABELS: Record<string, string> = {
-  "amount": 'Amount',
-  "name": 'Name',
-  "id": 'ID',
-  "transaction_state": 'Transaction State',
-  "device_ip": 'Device IP',
-  "installments": 'Installments',
-}
+  amount: "Amount",
+  name: "Name",
+  id: "ID",
+  transaction_state: "Transaction State",
+  device_ip: "Device IP",
+  installments: "Installments",
+};
 
 export const DEFAULT_FIELD_VALUES = {
   name: "",
@@ -53,6 +53,19 @@ export const initialRule = {
   value: "",
 } as RuleType;
 
+export const initialState = {
+  id: crypto.randomUUID(),
+  combinator: "AND",
+  conditions: [initialRule],
+} as RuleGroupType;
 
-export const TRANSACTION_STATES = ["SUCCEEDED", "REJECTED", "ERROR", "TIMEOUT", "CANCELLED", "FAILED", "ABORTED"] as const;
+export const TRANSACTION_STATES = [
+  "SUCCEEDED",
+  "REJECTED",
+  "ERROR",
+  "TIMEOUT",
+  "CANCELLED",
+  "FAILED",
+  "ABORTED",
+] as const;
 export const CURRENCIES = ["USD", "EUR", "GBP"] as const;

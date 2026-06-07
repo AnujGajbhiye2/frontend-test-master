@@ -4,8 +4,8 @@ import AppShell from "./layout/AppShell";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RuleGroupType } from "./types/RuleTypes";
-import { initialRule } from "./lib/constants";
 import { validate } from "./lib/utils";
+import { initialState } from "./lib/constants";
 
 function serialize(group: RuleGroupType, isRoot: boolean): object {
   const key = isRoot ? "conditions" : "subConditions";
@@ -21,11 +21,7 @@ function serialize(group: RuleGroupType, isRoot: boolean): object {
 
 function App() {
   const [submitted, setSubmitted] = useState<boolean>(false);
-  const [group, setGroup] = useState<RuleGroupType>({
-    id: crypto.randomUUID(),
-    combinator: "AND",
-    conditions: [initialRule],
-  });
+  const [group, setGroup] = useState<RuleGroupType>(initialState);
   const [result, setResult] = useState<object | null>(null);
 
   useEffect(() => {
@@ -38,6 +34,12 @@ function App() {
     setSubmitted(false);
     setResult(serialize(group, true));
   };
+
+  const handleReset = () => {
+    setSubmitted(false)
+    setResult(null)
+    setGroup(initialState)
+  }
 
   const hasError = (group: RuleGroupType): boolean => {
     return group.conditions.some((condition) => {
@@ -53,6 +55,7 @@ function App() {
       <div className="grid grid-cols-12 gap-6 items-start">
         <div className="col-span-6 space-y-4">
           <Group group={group} onChange={setGroup} submitted={submitted} />
+          <Button onClick={handleReset} variant={'outline'} className="mr-2">Reset</Button>
           <Button onClick={handleSubmit}>Submit Query</Button>
         </div>
 
