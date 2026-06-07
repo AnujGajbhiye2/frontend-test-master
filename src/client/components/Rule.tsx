@@ -6,6 +6,8 @@ import {
   NumericOp,
   RuleType,
 } from "../types/RuleTypes";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const FIELD_NAMES = [
   "amount",
@@ -37,6 +39,9 @@ const DEFAULT_VALUES = {
   transaction_state: "SUCCEEDED",
 };
 
+const TRANSACTION_STATES = ["SUCCEEDED", "REJECTED", "ERROR", "TIMEOUT", "CANCELLED", "FAILED", "ABORTED"] as const;
+const CURRENCIES = ["USD", "EUR", "GBP"] as const;
+
 const Rule = ({
   rule,
   onChange,
@@ -44,35 +49,28 @@ const Rule = ({
   rule: RuleType;
   onChange: (updated: RuleType) => void;
 }) => {
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-    fieldType: string,
-  ): void => {
+  const handleSelectChange = (value: string, fieldType: string): void => {
     let newFieldName, newOP, newValue;
 
-    if (fieldType === "amount" || fieldType === "currency") {
+    if (fieldType === "currency") {
       newValue = {
-        amount:
-          fieldType === "amount"
-            ? Number(e.target.value)
-            : (rule.value as CurrencyRule["value"]).amount,
-        currency:
-          fieldType === "currency"
-            ? e.target.value
-            : (rule.value as CurrencyRule["value"]).currency,
+        amount: (rule.value as CurrencyRule["value"]).amount,
+        currency: value,
       };
-    } else if (fieldType === "value") {
-      newValue = e.target.value;
     }
 
     if (fieldType === "fieldName") {
-      newFieldName = e.target.value as FieldNameType;
+      newFieldName = value as FieldNameType;
       newValue = DEFAULT_VALUES[newFieldName];
       newOP = "EQUAL";
     }
 
     if (fieldType === "operation") {
-      newOP = e.target.value;
+      newOP = value;
+    }
+
+    if (fieldType === "transaction_state") {
+      newValue = value;
     }
 
     onChange({
@@ -82,45 +80,97 @@ const Rule = ({
       value: newValue ?? rule.value,
     } as RuleType);
   };
-  const { id, fieldName, operation } = rule;
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    fieldType: string,
+  ): void => {
+    let newValue;
+
+    if (fieldType === "amount") {
+      newValue = {
+        amount: Number(e.target.value),
+        currency: (rule.value as CurrencyRule["value"]).currency,
+      };
+    } else {
+      newValue = fieldType === "installments" ? Number(e.target.value) : e.target.value;
+    }
+
+    onChange({ ...rule, value: newValue } as RuleType);
+  };
+
+  const { fieldName, operation } = rule;
+
   return (
-    <div key={id}>
-      <select
-        value={fieldName}
-        onChange={(e) => handleChange(e, "fieldName")}
-      >
-        {FIELD_NAMES.map((field) => (
-          <option key={field}>{field}</option>
-        ))}
-      </select>
-      <select
-        value={operation}
-        onChange={(e) => handleChange(e, "operation")}
-      >
-        {OPERATION_MAP[fieldName].map((op) => (
-          <option key={op}>{op}</option>
-        ))}
-      </select>
-      {rule.fieldName === "amount" && (
-        <select
-          value={rule.value.currency}
-          onChange={(e) => {
-            handleChange(e, "currency");
-          }}
+    <div className="flex items-center gap-2 rounded-md border bg-background px-3 py-2">
+      <Select value={fieldName} onValueChange={(val) => handleSelectChange(val, "fieldName")}>
+        <SelectTrigger className="w-40 px-4 py-2">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          {FIELD_NAMES.map((f) => (
+            <SelectItem key={f} value={f}>{f}</SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+
+      <Select value={operation} onValueChange={(val) => handleSelectChange(val, "operation")}>
+        <SelectTrigger className="w-40 px-4 py-2">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          {OPERATION_MAP[fieldName].map((op) => (
+            <SelectItem key={op} value={op}>{op}</SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+
+      {rule.fieldName === "transaction_state" ? (
+        <Select
+          value={rule.value as string}
+          onValueChange={(val) => handleSelectChange(val, "transaction_state")}
         >
-          <option value="USD">USD</option>
-          <option value="EUR">EUR</option>
-          <option value="GBP">GBP</option>
-        </select>
+          <SelectTrigger className="w-40 px-4 py-2">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {TRANSACTION_STATES.map((s) => (
+              <SelectItem key={s} value={s}>{s}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      ) : rule.fieldName === "amount" ? (
+        <>
+          <Select
+            value={rule.value.currency}
+            onValueChange={(val) => handleSelectChange(val, "currency")}
+          >
+            <SelectTrigger className="w-24 px-4 py-2">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {CURRENCIES.map((c) => (
+                <SelectItem key={c} value={c}>{c}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Input
+            className="w-32"
+            type="number"
+            placeholder="Amount"
+            value={rule.value.amount}
+            onChange={(e) => handleInputChange(e, "amount")}
+          />
+        </>
+      ) : (
+        <Input
+          className="w-40"
+          type={rule.fieldName === "installments" ? "number" : "text"}
+          placeholder="Value"
+          value={rule.value as string | number}
+          onChange={(e) => handleInputChange(e, rule.fieldName === "installments" ? "installments" : "value")}
+        />
       )}
-      <input
-        placeholder="Value"
-        type={fieldName === "amount" ? "number" : "text"}
-        value={rule.fieldName === "amount" ? rule.value.amount : rule.value}
-        onChange={(e) =>
-          handleChange(e, fieldName === "amount" ? "amount" : "value")
-        }
-      />
     </div>
   );
 };
