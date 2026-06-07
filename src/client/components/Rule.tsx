@@ -1,4 +1,3 @@
-import React from "react";
 import { CurrencyRule, FieldNameType, RuleType } from "../types/RuleTypes";
 import { Input } from "@/components/ui/input";
 import {
@@ -80,7 +79,7 @@ const Rule = ({
       </Select>
 
       {rule.fieldName === "transaction_state" ? (
-        <Select value={rule.value as string} onValueChange={(val) => handleValueChange(val)}>
+        <Select value={rule.value as string} onValueChange={handleValueChange}>
           <SelectTrigger className="w-40 px-4 py-2">
             <SelectValue />
           </SelectTrigger>
@@ -139,7 +138,7 @@ const Rule = ({
         type="button"
         variant="destructive"
         className="cursor-pointer"
-        onClick={() => onDelete()}
+        onClick={onDelete}
       >
         -
       </Button>

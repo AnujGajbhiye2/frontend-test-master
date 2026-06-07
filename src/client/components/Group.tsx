@@ -1,5 +1,5 @@
 import React from "react";
-import { CombinatorType, RuleGroupType, RuleType } from "../types/RuleTypes";
+import { CombinatorType, RuleGroupType } from "../types/RuleTypes";
 import Rule from "./Rule";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,22 +10,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
-
-const initialRule = {
-  id: crypto.randomUUID(),
-  fieldName: "name",
-  operation: "EQUAL",
-  value: "",
-} as RuleType;
+import { initialRule } from "@/lib/constants";
 
 type GroupProps = {
   group: RuleGroupType;
   onChange: React.Dispatch<React.SetStateAction<RuleGroupType>>;
-  depth?: number;
   onDelete?: () => void;
 };
 
-const Group = ({ group, onChange, depth = 0, onDelete }: GroupProps) => {
+const Group = ({ group, onChange, onDelete }: GroupProps) => {
   const childSetter = (childId: string, action: React.SetStateAction<RuleGroupType>): void =>
     onChange((prev) => ({
       ...prev,
@@ -61,7 +54,7 @@ const Group = ({ group, onChange, depth = 0, onDelete }: GroupProps) => {
   };
 
   return (
-    <Card className={depth > 0 ? "border-l-4 border-l-primary/30 ml-4" : ""}>
+    <Card className={onDelete ? "border-l-4 border-l-primary/30 ml-4" : ""}>
       <CardContent className="pt-4 space-y-3">
         <div className="flex items-center gap-2">
           <Select
@@ -105,7 +98,6 @@ const Group = ({ group, onChange, depth = 0, onDelete }: GroupProps) => {
                   key={cond.id}
                   group={cond}
                   onChange={(action) => childSetter(cond.id, action)}
-                  depth={depth + 1}
                   onDelete={() =>
                     onChange((prev) => ({
                       ...prev,

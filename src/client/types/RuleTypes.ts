@@ -1,3 +1,4 @@
+import { FIELD_NAMES } from "@/lib/constants";
 
 export type CombinatorType = "AND" | "OR";
 
@@ -48,8 +49,4 @@ export type RuleGroupType = {
   conditions: Array<RuleType | RuleGroupType>;
 };
 
-export type FieldNameType =
-  | TextRule["fieldName"]
-  | NumericRule["fieldName"]
-  | CurrencyRule["fieldName"]
-  | EnumRule["fieldName"];
+export type FieldNameType = typeof FIELD_NAMES[number];

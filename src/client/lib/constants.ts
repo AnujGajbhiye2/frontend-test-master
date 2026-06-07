@@ -1,4 +1,4 @@
-import { EqualityOp, NumericOp, FieldNameType } from "@/types/RuleTypes";
+import { EqualityOp, NumericOp, FieldNameType, RuleType } from "@/types/RuleTypes";
 
 export const FIELD_NAMES = [
   "amount",
@@ -9,10 +9,10 @@ export const FIELD_NAMES = [
   "installments",
 ] as const;
 
-export const EQUALITY_OPS: EqualityOp[] = ["EQUAL", "NOT_EQUAL"];
-export const NUMERIC_OPS: NumericOp[] = [...EQUALITY_OPS, "LESS_THAN", "GREATER_THAN"];
+export const EQUALITY_OPS: EqualityOp[] = ["EQUAL", "NOT_EQUAL"] as const;
+export const NUMERIC_OPS: NumericOp[] = [...EQUALITY_OPS, "LESS_THAN", "GREATER_THAN"] as const;
 
-export const OPERATION_MAP: Record<FieldNameType, string[]> = {
+export const OPERATION_MAP: Record<FieldNameType, ReadonlyArray<EqualityOp | NumericOp>> = {
   name: EQUALITY_OPS,
   device_ip: EQUALITY_OPS,
   id: EQUALITY_OPS,
@@ -29,6 +29,14 @@ export const DEFAULT_FIELD_VALUES = {
   amount: { amount: 0, currency: "USD" },
   transaction_state: "SUCCEEDED",
 };
+
+export const initialRule = {
+  id: crypto.randomUUID(),
+  fieldName: "name",
+  operation: "EQUAL",
+  value: "",
+} as RuleType;
+
 
 export const TRANSACTION_STATES = ["SUCCEEDED", "REJECTED", "ERROR", "TIMEOUT", "CANCELLED", "FAILED", "ABORTED"] as const;
 export const CURRENCIES = ["USD", "EUR", "GBP"] as const;

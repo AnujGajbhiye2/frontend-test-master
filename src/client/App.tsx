@@ -3,14 +3,8 @@ import Group from "./components/Group";
 import AppShell from "./layout/AppShell";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { RuleGroupType, RuleType } from "./types/RuleTypes";
-
-const initialRule = {
-  id: crypto.randomUUID(),
-  fieldName: "name",
-  operation: "EQUAL",
-  value: "",
-} as RuleType;
+import { RuleGroupType } from "./types/RuleTypes";
+import { initialRule } from "./lib/constants";
 
 function serialize(group: RuleGroupType, isRoot: boolean): object {
   const key = isRoot ? "conditions" : "subConditions";
