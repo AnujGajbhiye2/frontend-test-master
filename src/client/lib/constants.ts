@@ -57,7 +57,7 @@ export const createInitialState = (): RuleGroupType => ({
   id: crypto.randomUUID(),
   combinator: 'AND',
   conditions: [
-    { id: crypto.randomUUID(), fieldName: 'name', operation: 'EQUAL', value: '' } as RuleType,
+    { ...initialRule, id: crypto.randomUUID()  } as RuleType,
   ],
 });
 

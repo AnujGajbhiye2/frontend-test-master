@@ -64,7 +64,7 @@ const Group = ({ group, onChange, onDelete, submitted}: GroupProps) => {
               onChange((prev) => ({ ...prev, combinator: val as CombinatorType }))
             }
           >
-            <SelectTrigger className="w-24 px-4 py-2">
+            <SelectTrigger aria-label="Combinator" className="w-24 px-4 py-2">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

@@ -13,6 +13,9 @@ type ValueWidgetPropsType = {
 };
 
 const ValueWidget = ({ rule, onChange, error, setError }: ValueWidgetPropsType) => {
+  const errId = `${rule.id}-err`;
+  const describedBy = error ? errId : undefined;
+
   const handleValueChange = (value: RuleType['value']): void => {
     onChange({
       ...rule,
@@ -23,7 +26,7 @@ const ValueWidget = ({ rule, onChange, error, setError }: ValueWidgetPropsType) 
   if (rule.fieldName === 'transaction_state') {
     return (
       <Select value={rule.value as string} onValueChange={handleValueChange}>
-        <SelectTrigger className='w-40 px-4 py-2'>
+        <SelectTrigger aria-label='Value' className='w-40 px-4 py-2'>
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
@@ -44,7 +47,7 @@ const ValueWidget = ({ rule, onChange, error, setError }: ValueWidgetPropsType) 
           value={rule.value.currency}
           onValueChange={(val) => handleValueChange({ ...rule.value, currency: val })}
         >
-          <SelectTrigger className='w-24 px-4 py-2'>
+          <SelectTrigger aria-label='Currency' className='w-24 px-4 py-2'>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -56,6 +59,9 @@ const ValueWidget = ({ rule, onChange, error, setError }: ValueWidgetPropsType) 
           </SelectContent>
         </Select>
         <Input
+          aria-label='Amount'
+          aria-invalid={!!error}
+          aria-describedby={describedBy}
           className={error ? ' border-destructive' : ''}
           type='number'
           placeholder='Amount'
@@ -74,6 +80,9 @@ const ValueWidget = ({ rule, onChange, error, setError }: ValueWidgetPropsType) 
 
   return (
     <Input
+      aria-label='Value'
+      aria-invalid={!!error}
+      aria-describedby={describedBy}
       className={error ? ' border-destructive' : ''}
       type={rule.fieldName === 'installments' ? 'number' : 'text'}
       placeholder='Value'

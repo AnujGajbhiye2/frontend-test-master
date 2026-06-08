@@ -48,7 +48,7 @@ const Rule = ({ rule, onChange, onDelete, submitted }: RulePropsType) => {
     <div className="flex flex-col">
       <div className="flex flex-wrap lg:flex-nowrap items-center gap-2 rounded-md border bg-background px-3 py-2">
         <Select value={fieldName} onValueChange={handleFieldNameChange}>
-          <SelectTrigger className="w-40 px-4 py-2">
+          <SelectTrigger aria-label="Field name" className="w-40 px-4 py-2">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -61,7 +61,7 @@ const Rule = ({ rule, onChange, onDelete, submitted }: RulePropsType) => {
         </Select>
 
         <Select value={operation} onValueChange={handleOperationChange}>
-          <SelectTrigger className="w-40 px-4 py-2">
+          <SelectTrigger aria-label="Operation" className="w-40 px-4 py-2">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -76,7 +76,13 @@ const Rule = ({ rule, onChange, onDelete, submitted }: RulePropsType) => {
         <div className="flex flex-col pt-3.5">
           <ValueWidget rule={rule} onChange={onChange} error={error} setError={setError} />
 
-          <p className="text-destructive text-[0.65rem] pt-0.5 min-h-4 ">{error}</p>
+          <p
+            id={`${rule.id}-err`}
+            role="alert"
+            className="text-destructive text-[0.65rem] pt-0.5 min-h-4 "
+          >
+            {error}
+          </p>
         </div>
 
         <Button type="button" variant="destructive" className="cursor-pointer" onClick={onDelete}>
