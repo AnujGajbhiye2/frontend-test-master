@@ -16,8 +16,7 @@
     "check": "npm run lint && npm run format",
     "preview": "vite preview",
     "start": "concurrently \"npm run dev\" \"npm run dev:server\"",
-    "dev:server": "nodemon --watch src/server --exec \"npx tsc -p tsconfig.node.json && node dist/server/index.js\"",
-    "prepare": "husky"
+    "dev:server": "nodemon --watch src/server --exec \"npx tsc -p tsconfig.node.json && node dist/server/index.js\""
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.2.9",
