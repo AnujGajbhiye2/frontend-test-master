@@ -6,10 +6,10 @@ import tseslint from 'typescript-eslint'
 import prettier from 'eslint-config-prettier'
 
 export default tseslint.config(
-  { ignores: ['dist'] },
+  { ignores: ['dist', 'coverage', 'src/server'] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended, prettier],
-    files: ['**/*.{ts,tsx}'],
+    files: ['src/client/**/*.{ts,tsx}'],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,

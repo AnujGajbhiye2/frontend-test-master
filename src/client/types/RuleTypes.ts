@@ -50,3 +50,11 @@ export type RuleGroupType = {
 };
 
 export type FieldNameType = typeof FIELD_NAMES[number];
+
+export type SerializedRule = { fieldName: string; operation: string; value: unknown };
+
+export type SerializedGroup = {
+  combinator: string;
+  conditions?: Array<SerializedRule | SerializedGroup>;
+  subConditions?: Array<SerializedRule | SerializedGroup>;
+};

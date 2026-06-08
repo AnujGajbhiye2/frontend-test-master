@@ -72,10 +72,10 @@ const Group = ({ group, onChange, onDelete, submitted}: GroupProps) => {
               <SelectItem value="OR">OR</SelectItem>
             </SelectContent>
           </Select>
-          <Button size="sm" variant="default" onClick={handleAddRule}>
+          <Button size="sm" type="button" variant="default" onClick={handleAddRule}>
             + Rule
           </Button>
-          <Button size="sm" variant="default" onClick={handleAddGroup}>
+          <Button size="sm" type='button' variant="default" onClick={handleAddGroup}>
             + Group
           </Button>
           {onDelete && (

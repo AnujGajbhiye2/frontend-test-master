@@ -3,6 +3,12 @@ import userEvent from '@testing-library/user-event';
 import { expect, it } from 'vitest';
 import App from './App';
 
+import { vi } from 'vitest';
+
+vi.mock('./services/rulesService', () => ({
+  saveRules: vi.fn().mockResolvedValue(undefined),
+}));
+
 it('renders submit and reset buttons', () => {
   render(<App />);
   expect(screen.getByRole('button', { name: 'Submit Query' })).toBeInTheDocument();

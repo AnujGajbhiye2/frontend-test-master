@@ -27,7 +27,13 @@ export default defineConfig({
       provider: 'istanbul',
       reporter: ['text', 'html'],
       include: ['src/client/**/*.{ts,tsx}'],
-      exclude: ['src/client/components/ui/**', 'src/client/main.tsx'] // shadcn generated files, can skip
+      exclude: ['src/client/components/ui/**', 'src/client/main.tsx'],
+      thresholds: {
+        statements: 80,
+        branches: 80,
+        functions: 80,
+        lines: 80,
+      },
     }
   },
 });

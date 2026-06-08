@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "prepare": "husky",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "test": "vitest",
@@ -15,7 +16,8 @@
     "check": "npm run lint && npm run format",
     "preview": "vite preview",
     "start": "concurrently \"npm run dev\" \"npm run dev:server\"",
-    "dev:server": "nodemon --watch src/server --exec \"npx tsc -p tsconfig.node.json && node dist/server/index.js\""
+    "dev:server": "nodemon --watch src/server --exec \"npx tsc -p tsconfig.node.json && node dist/server/index.js\"",
+    "prepare": "husky"
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.2.9",
@@ -53,6 +55,7 @@
     "eslint-plugin-react-hooks": "5.1.0-rc.0",
     "eslint-plugin-react-refresh": "0.4.9",
     "globals": "15.9.0",
+    "husky": "^9.1.7",
     "jsdom": "25.0.1",
     "nodemon": "3.1.7",
     "prettier": "^3.8.3",
