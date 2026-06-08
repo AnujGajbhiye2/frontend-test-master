@@ -1,16 +1,16 @@
-import React from "react";
-import { CombinatorType, RuleGroupType } from "../types/RuleTypes";
-import Rule from "./Rule";
-import { Button } from "@/components/ui/button";
+import React from 'react';
+import { CombinatorType, RuleGroupType } from '../types/RuleTypes';
+import Rule from './Rule';
+import { Button } from '@/components/ui/button';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Card, CardContent } from "@/components/ui/card";
-import { initialRule } from "@/lib/constants";
+} from '@/components/ui/select';
+import { Card, CardContent } from '@/components/ui/card';
+import { initialRule } from '@/lib/constants';
 
 type GroupProps = {
   group: RuleGroupType;
@@ -19,20 +19,20 @@ type GroupProps = {
   submitted: boolean;
 };
 
-const Group = ({ group, onChange, onDelete, submitted}: GroupProps) => {
+const Group = ({ group, onChange, onDelete, submitted }: GroupProps) => {
   const childSetter = (childId: string, action: React.SetStateAction<RuleGroupType>): void =>
     onChange((prev) => ({
       ...prev,
       conditions: prev.conditions.map((c) => {
         if (c.id !== childId) return c;
-        return typeof action === "function" ? action(c as RuleGroupType) : action;
+        return typeof action === 'function' ? action(c as RuleGroupType) : action;
       }),
     }));
 
   const handleAddRule = (): void => {
     onChange((prev) => {
-      const rules = prev.conditions.filter((c) => !("combinator" in c));
-      const groups = prev.conditions.filter((c) => "combinator" in c);
+      const rules = prev.conditions.filter((c) => !('combinator' in c));
+      const groups = prev.conditions.filter((c) => 'combinator' in c);
       return {
         ...prev,
         conditions: [...rules, { ...initialRule, id: crypto.randomUUID() }, ...groups],
@@ -47,7 +47,7 @@ const Group = ({ group, onChange, onDelete, submitted}: GroupProps) => {
         ...prev.conditions,
         {
           id: crypto.randomUUID(),
-          combinator: "AND",
+          combinator: 'AND',
           conditions: [{ ...initialRule, id: crypto.randomUUID() }],
         } as RuleGroupType,
       ],
@@ -55,35 +55,35 @@ const Group = ({ group, onChange, onDelete, submitted}: GroupProps) => {
   };
 
   return (
-    <Card className={onDelete ? "border-l-4 border-l-primary/30 ml-4" : ""}>
-      <CardContent className="pt-4 space-y-3">
-        <div className="flex items-center gap-2">
+    <Card className={onDelete ? 'border-l-4 border-l-primary/30 ml-4' : ''}>
+      <CardContent className='pt-4 space-y-3'>
+        <div className='flex items-center gap-2'>
           <Select
             value={group.combinator}
             onValueChange={(val) =>
               onChange((prev) => ({ ...prev, combinator: val as CombinatorType }))
             }
           >
-            <SelectTrigger aria-label="Combinator" className="w-24 px-4 py-2">
+            <SelectTrigger aria-label='Combinator' className='w-24 px-4 py-2'>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="AND">AND</SelectItem>
-              <SelectItem value="OR">OR</SelectItem>
+              <SelectItem value='AND'>AND</SelectItem>
+              <SelectItem value='OR'>OR</SelectItem>
             </SelectContent>
           </Select>
-          <Button size="sm" type="button" variant="default" onClick={handleAddRule}>
+          <Button size='sm' type='button' variant='default' onClick={handleAddRule}>
             + Rule
           </Button>
-          <Button size="sm" type='button' variant="default" onClick={handleAddGroup}>
+          <Button size='sm' type='button' variant='default' onClick={handleAddGroup}>
             + Group
           </Button>
           {onDelete && (
             <Button
-              className="cursor-pointer"
-              type="button"
-              size="sm"
-              variant="destructive"
+              className='cursor-pointer'
+              type='button'
+              size='sm'
+              variant='destructive'
               onClick={onDelete}
             >
               -
@@ -91,9 +91,9 @@ const Group = ({ group, onChange, onDelete, submitted}: GroupProps) => {
           )}
         </div>
 
-        <div className="space-y-2">
+        <div className='space-y-2'>
           {group.conditions.map((cond) => {
-            if ("combinator" in cond) {
+            if ('combinator' in cond) {
               return (
                 <Group
                   key={cond.id}

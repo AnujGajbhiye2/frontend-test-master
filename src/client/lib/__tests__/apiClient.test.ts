@@ -15,7 +15,6 @@ vi.mock('axios', async (importOriginal) => {
   };
 });
 
-
 const { default: apiClient } = await import('../apiClient');
 
 describe('apiClient.post', () => {

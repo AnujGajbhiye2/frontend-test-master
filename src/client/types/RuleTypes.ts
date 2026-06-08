@@ -1,24 +1,24 @@
-import { FIELD_NAMES } from "@/lib/constants";
+import { FIELD_NAMES } from '@/lib/constants';
 
-export type CombinatorType = "AND" | "OR";
+export type CombinatorType = 'AND' | 'OR';
 
-export type EqualityOp = "EQUAL" | "NOT_EQUAL";
-export type NumericOp = EqualityOp | "LESS_THAN" | "GREATER_THAN";
+export type EqualityOp = 'EQUAL' | 'NOT_EQUAL';
+export type NumericOp = EqualityOp | 'LESS_THAN' | 'GREATER_THAN';
 
 export type TextRule = {
-  fieldName: "name" | "id" | "device_ip";
+  fieldName: 'name' | 'id' | 'device_ip';
   operation: EqualityOp;
   value: string;
 };
 
 export type NumericRule = {
-  fieldName: "installments";
+  fieldName: 'installments';
   operation: NumericOp;
   value: number;
 };
 
 export type CurrencyRule = {
-  fieldName: "amount";
+  fieldName: 'amount';
   operation: NumericOp;
   value: {
     amount: number;
@@ -27,16 +27,9 @@ export type CurrencyRule = {
 };
 
 export type EnumRule = {
-  fieldName: "transaction_state";
+  fieldName: 'transaction_state';
   operation: EqualityOp;
-  value:
-    | "SUCCEEDED"
-    | "REJECTED"
-    | "ERROR"
-    | "TIMEOUT"
-    | "CANCELLED"
-    | "FAILED"
-    | "ABORTED";
+  value: 'SUCCEEDED' | 'REJECTED' | 'ERROR' | 'TIMEOUT' | 'CANCELLED' | 'FAILED' | 'ABORTED';
 };
 
 export type RuleType = (TextRule | NumericRule | CurrencyRule | EnumRule) & {
@@ -49,7 +42,7 @@ export type RuleGroupType = {
   conditions: Array<RuleType | RuleGroupType>;
 };
 
-export type FieldNameType = typeof FIELD_NAMES[number];
+export type FieldNameType = (typeof FIELD_NAMES)[number];
 
 export type SerializedRule = { fieldName: string; operation: string; value: unknown };
 

@@ -56,11 +56,8 @@ export const initialRule = {
 export const createInitialState = (): RuleGroupType => ({
   id: crypto.randomUUID(),
   combinator: 'AND',
-  conditions: [
-    { ...initialRule, id: crypto.randomUUID()  } as RuleType,
-  ],
+  conditions: [{ ...initialRule, id: crypto.randomUUID() } as RuleType],
 });
-
 
 export const TRANSACTION_STATES = [
   'SUCCEEDED',

@@ -1,5 +1,5 @@
-import apiClient from "@/lib/apiClient";
+import apiClient from '@/lib/apiClient';
 
 export async function saveRules(payload: object, signal?: AbortSignal): Promise<void> {
-  await apiClient.post("/save-rules", payload, signal);
+  await apiClient.post('/save-rules', payload, signal);
 }
