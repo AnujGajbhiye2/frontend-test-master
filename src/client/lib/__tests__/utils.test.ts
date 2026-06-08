@@ -84,14 +84,14 @@ describe("serialize test", () => {
     const group = {
       id: "g1",
       combinator: "AND",
-      conditions: [{ id: "r1", fieldName: "name", operation: "EQUAL", value: "foo" }],
+      conditions: [{ id: "r1", fieldName: "name", operation: "EQUAL", value: "Anuj" }],
     } as RuleGroupType;
 
     const result = serialize(group, true) as { combinator: string; conditions: object[] };
 
     expect(result.combinator).toBe("AND");
     expect(result.conditions).toHaveLength(1);
-    expect(result.conditions[0]).toEqual({ fieldName: "name", operation: "EQUAL", value: "foo" });
+    expect(result.conditions[0]).toEqual({ fieldName: "name", operation: "EQUAL", value: "Anuj" });
     expect(result.conditions[0]).not.toHaveProperty("id");
   });
 
@@ -100,7 +100,7 @@ describe("serialize test", () => {
       id: "g1",
       combinator: "AND",
       conditions: [
-        { id: "r1", fieldName: "name", operation: "EQUAL", value: "foo" },
+        { id: "r1", fieldName: "name", operation: "EQUAL", value: "Anuj" },
         {
           id: "g2",
           combinator: "OR",
