@@ -46,7 +46,7 @@ const Rule = ({ rule, onChange, onDelete, submitted }: RulePropsType) => {
 
   return (
     <div className="flex flex-col">
-      <div className="flex items-center gap-2 rounded-md border bg-background px-3 py-2">
+      <div className="flex flex-wrap lg:flex-nowrap items-center gap-2 rounded-md border bg-background px-3 py-2">
         <Select value={fieldName} onValueChange={handleFieldNameChange}>
           <SelectTrigger className="w-40 px-4 py-2">
             <SelectValue />

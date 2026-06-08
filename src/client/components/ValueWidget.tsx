@@ -77,7 +77,7 @@ const ValueWidget = ({
 
   return (
     <Input
-      className={"w-40" + (error ? " border-destructive" : "")}
+      className={ (error ? " border-destructive" : "")}
       type={rule.fieldName === "installments" ? "number" : "text"}
       placeholder="Value"
       value={rule.value as string | number}
