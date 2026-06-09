@@ -8,9 +8,11 @@ import { hasError, serialize } from './lib/utils';
 import { createInitialState } from './lib/constants';
 
 import { saveRules } from './services/rulesService';
+import { toast } from 'sonner';
 
 function App() {
   const [submitted, setSubmitted] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [group, setGroup] = useState<RuleGroupType>(createInitialState());
   const [result, setResult] = useState<object | null>(null);
   const controllerRef = useRef<AbortController | null>(null);
@@ -19,22 +21,30 @@ function App() {
     setSubmitted(false);
   }, [group]);
 
+  useEffect(() => () => controllerRef.current?.abort(), []); //clean up to cancel in-flight req on unmount
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
-    if (hasError(group)) return alert('Please fix validation errors before submitting.');
+    if (hasError(group)) return toast.error('Please fix validation errors before submitting.');
 
     controllerRef.current?.abort();
-    controllerRef.current = new AbortController();
+    const controller = new AbortController();
+    controllerRef.current = controller;
     setSubmitted(false);
 
     const payload = serialize(group, true);
+    setLoading(true);
 
     try {
-      await saveRules(payload, controllerRef.current.signal);
+      await saveRules(payload, controller.signal);
       setResult(payload);
+      toast.success('Query saved');
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Failed to save rules');
+      if (controller.signal.aborted) return;
+      toast.error(err instanceof Error ? err.message : 'Failed to save rules');
+    } finally {
+      if (controllerRef.current === controller) setLoading(false);
     }
   };
 
@@ -52,7 +62,7 @@ function App() {
           <Button onClick={handleReset} type='button' variant={'outline'} className='mr-2'>
             Reset
           </Button>
-          <Button type='submit'>Submit Query</Button>
+          <Button type='submit'>{loading ? 'Saving...' : 'Submit Query'}</Button>
         </form>
 
         <div className='col-span-12 lg:col-span-6'>
