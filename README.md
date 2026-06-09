@@ -1,5 +1,7 @@
 # Query Builder
 
+[![CI](https://github.com/AnujGajbhiye2/frontend-test-master/actions/workflows/ci.yml/badge.svg)](https://github.com/AnujGajbhiye2/frontend-test-master/actions/workflows/ci.yml)
+
 A dynamic query builder built with **React + TypeScript + Vite**, backed by a lightweight **Express** server. Users compose nested rule groups — each rule a `Field Name` / `Operation` / `Value` triple — and submit them as a JSON payload matching the required schema.
 
 ## Features
@@ -58,7 +60,7 @@ src/client/
 │   ├── Rule.tsx            # field/operation selects + per-rule error state
 │   ├── ValueWidget.tsx     # renders the value input by field type
 │   └── ui/                 # shadcn primitives
-├── layout/AppShell.tsx     # page chrome
+├── layout/AppShell.tsx     # header, page layout, toast host
 ├── lib/
 │   ├── constants.ts        # field names, operation maps, defaults, factories
 │   ├── utils.ts            # validate, hasError, serialize, cn
