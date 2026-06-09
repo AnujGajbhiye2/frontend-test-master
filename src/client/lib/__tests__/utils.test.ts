@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { serialize, validate } from '../utils';
+import { hasError, serialize, validate } from '../utils';
 import { RuleGroupType } from '@/types/RuleTypes';
 
 describe('validate test', () => {
@@ -116,5 +116,49 @@ describe('serialize test', () => {
     expect(nestedGroup).toHaveProperty('subConditions');
 
     expect(nestedGroup).not.toHaveProperty('conditions');
+  });
+});
+
+describe('Tests for hasError function', () => {
+  it('returns true for invalid value', () => {
+    const group = {
+      id: 'g1',
+      combinator: 'AND',
+      conditions: [{ id: 'r1', fieldName: 'name', operation: 'EQUAL', value: '' }],
+    } as RuleGroupType;
+
+    const result = hasError(group);
+    expect(result).toBe(true);
+  });
+
+  it('returns false for valid value', () => {
+    const group = {
+      id: 'g1',
+      combinator: 'AND',
+      conditions: [{ id: 'r1', fieldName: 'name', operation: 'EQUAL', value: 'Anuj' }],
+    } as RuleGroupType;
+
+    const result = hasError(group);
+    expect(result).toBe(false);
+  });
+
+  it('returns true for invalid value in nested group', () => {
+    const group = {
+      id: 'g1',
+      combinator: 'AND',
+      conditions: [
+        { id: 'r1', fieldName: 'name', operation: 'EQUAL', value: '' },
+        {
+          id: 'g2',
+          combinator: 'OR',
+          conditions: [
+            { fieldName: 'amount', operation: 'EQUAL', value: { currency: 'EUR', amount: 0 } },
+          ],
+        },
+      ],
+    } as RuleGroupType;
+
+    const result = hasError(group);
+    expect(result).toBe(true);
   });
 });
