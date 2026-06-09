@@ -1,5 +1,5 @@
 import React from 'react';
-import { CombinatorType, RuleGroupType } from '../types/RuleTypes';
+import { CombinatorType, RuleGroupType, RuleType } from '../types/RuleTypes';
 import Rule from './Rule';
 import { Button } from '@/components/ui/button';
 import {
@@ -54,6 +54,18 @@ const Group = ({ group, onChange, onDelete, submitted }: GroupProps) => {
     }));
   };
 
+  const handleDelete = (id: string): void =>
+    onChange((prev) => ({
+      ...prev,
+      conditions: prev.conditions.filter((c) => c.id !== id),
+    }));
+
+  const handleRuleChange = (updated: RuleType): void =>
+    onChange((prev) => ({
+      ...prev,
+      conditions: prev.conditions.map((c) => (c.id === updated.id ? updated : c)),
+    }));
+
   return (
     <Card className={onDelete ? 'border-l-4 border-l-primary/30 ml-4' : ''}>
       <CardContent className='pt-4 space-y-3'>
@@ -99,12 +111,7 @@ const Group = ({ group, onChange, onDelete, submitted }: GroupProps) => {
                   key={cond.id}
                   group={cond}
                   onChange={(action) => childSetter(cond.id, action)}
-                  onDelete={() =>
-                    onChange((prev) => ({
-                      ...prev,
-                      conditions: prev.conditions.filter((c) => c.id !== cond.id),
-                    }))
-                  }
+                  onDelete={() => handleDelete(cond.id)}
                   submitted={submitted}
                 />
               );
@@ -114,18 +121,8 @@ const Group = ({ group, onChange, onDelete, submitted }: GroupProps) => {
                   key={cond.id}
                   rule={cond}
                   submitted={submitted}
-                  onChange={(updated) =>
-                    onChange((prev) => ({
-                      ...prev,
-                      conditions: prev.conditions.map((c) => (c.id === updated.id ? updated : c)),
-                    }))
-                  }
-                  onDelete={() =>
-                    onChange((prev) => ({
-                      ...prev,
-                      conditions: prev.conditions.filter((c) => c.id !== cond.id),
-                    }))
-                  }
+                  onChange={handleRuleChange}
+                  onDelete={() => handleDelete(cond.id)}
                 />
               );
             }
